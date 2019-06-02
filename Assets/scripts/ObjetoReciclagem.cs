@@ -56,6 +56,11 @@ public class ObjetoReciclagem : MonoBehaviour
         transform.position = mousePos;
     }
 
+    void OnMouseUp()
+    {
+        movimentar = true;
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (gameObject.tag != "runtime" && other.tag != "runtime" && other.tag != "cidadeesquerda" && other.tag != "cidadedireita" && other.tag != "incineradora")
