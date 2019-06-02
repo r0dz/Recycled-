@@ -58,7 +58,7 @@ public class ObjetoReciclagem : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (gameObject.tag != "runtime" && other.tag != "runtime" && other.tag != "cidadeesquerda" && other.tag != "cidadedireita")
+        if (gameObject.tag != "runtime" && other.tag != "runtime" && other.tag != "cidadeesquerda" && other.tag != "cidadedireita" && other.tag != "incineradora")
         {
             if (other.tag == "verde" && (GetComponent<SpriteRenderer>().sprite.name == "vidro" || GetComponent<SpriteRenderer>().sprite.name == "vidro2"))
             {
@@ -116,6 +116,13 @@ public class ObjetoReciclagem : MonoBehaviour
                 destino = new Vector3(5.7f, -5.53f);
             }
 
+        }
+
+        if((GetComponent<SpriteRenderer>().sprite.name == "vidroquebrado" || GetComponent<SpriteRenderer>().sprite.name == "vidroquebrado2") 
+            && other.tag == "incineradora")
+        {
+            GameObject.Find("ObjectsManager").GetComponent<ObjectsManager>().deletaObjeto(cidade);
+            Destroy(gameObject);
         }
 
     }
