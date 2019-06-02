@@ -9,7 +9,7 @@ public class container : MonoBehaviour
 
     void Start()
     {
-        sprites = Resources.LoadAll<Sprite>("icons");
+        sprites = Resources.LoadAll<Sprite>("iconsreciclados");
     }
 
     private void OnMouseDown()

@@ -22,7 +22,7 @@ public class ObjectsManager : MonoBehaviour
 
     GameObject objetoGame;
     List<Objeto> objetos = new List<Objeto>();
-    string[] tipos = { "vidroquebrado", "plastico", "metal", "papel" };
+    string[] tipos = { "vidroquebrado", "vidroquebrado2", "vidro", "vidro2", "plastico", "plastico2", "metal", "metal2", "papel", "papel2"};
     Sprite[] sprites;
     Random random = new Random();
 
@@ -60,7 +60,7 @@ public class ObjectsManager : MonoBehaviour
                 }
                 Debug.Log("objeto criado");
 
-                objetoGame.GetComponent<SpriteRenderer>().sprite = sprites[random.Next(4)];
+                objetoGame.GetComponent<SpriteRenderer>().sprite = sprites[random.Next(10)];
             }
         }
     }
