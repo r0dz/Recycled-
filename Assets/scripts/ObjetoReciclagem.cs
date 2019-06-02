@@ -60,22 +60,22 @@ public class ObjetoReciclagem : MonoBehaviour
     {
         if (gameObject.tag != "runtime" && other.tag != "runtime" && other.tag != "cidadeesquerda" && other.tag != "cidadedireita")
         {
-            if (other.tag == "verde" && GetComponent<SpriteRenderer>().sprite.name == "vidro")
+            if (other.tag == "verde" && (GetComponent<SpriteRenderer>().sprite.name == "vidro" || GetComponent<SpriteRenderer>().sprite.name == "vidro2"))
             {
                 GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
                 GameObject.Find("GameController").GetComponent<GameController>().addVerde();
             }
-            else if (other.tag == "amarelo" && GetComponent<SpriteRenderer>().sprite.name == "metal")
+            else if (other.tag == "amarelo" && (GetComponent<SpriteRenderer>().sprite.name == "metal" || GetComponent<SpriteRenderer>().sprite.name == "metal2"))
             {
                 GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
                 GameObject.Find("GameController").GetComponent<GameController>().addAmarelo();
             }
-            else if (other.tag == "azul" && GetComponent<SpriteRenderer>().sprite.name == "papel")
+            else if (other.tag == "azul" && (GetComponent<SpriteRenderer>().sprite.name == "papel" || GetComponent<SpriteRenderer>().sprite.name == "papel2"))
             {
                 GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
                 GameObject.Find("GameController").GetComponent<GameController>().addAzul();
             }
-            else if (other.tag == "vermelho" && GetComponent<SpriteRenderer>().sprite.name == "plastico")
+            else if (other.tag == "vermelho" && (GetComponent<SpriteRenderer>().sprite.name == "plastico" || GetComponent<SpriteRenderer>().sprite.name == "plastico2"))
             {
                 GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
                 GameObject.Find("GameController").GetComponent<GameController>().addVermelho();
