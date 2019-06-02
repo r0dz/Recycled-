@@ -9,7 +9,7 @@ public class container : MonoBehaviour
 
     void Start()
     {
-        sprites = Resources.LoadAll<Sprite>("icons");
+        sprites = Resources.LoadAll<Sprite>("iconsreciclados");
     }
 
     private void OnMouseDown()
@@ -20,7 +20,7 @@ public class container : MonoBehaviour
             {
                 objetoGame = (UnityEngine.GameObject)Resources.Load("gameobjects/objetoreciclagem");
                 objetoGame = Instantiate(objetoGame, new Vector3(-7.43f, -5.53f), Quaternion.identity);
-                objetoGame.GetComponent<SpriteRenderer>().sprite = sprites[1];
+                objetoGame.GetComponent<SpriteRenderer>().sprite = sprites[0];
                 objetoGame.tag = "runtime";
                 Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 objetoGame.transform.position = mousePos;
@@ -33,7 +33,7 @@ public class container : MonoBehaviour
             {
                 objetoGame = (UnityEngine.GameObject)Resources.Load("gameobjects/objetoreciclagem");
                 objetoGame = Instantiate(objetoGame, new Vector3(-7.43f, -5.53f), Quaternion.identity);
-                objetoGame.GetComponent<SpriteRenderer>().sprite = sprites[2];
+                objetoGame.GetComponent<SpriteRenderer>().sprite = sprites[1];
                 objetoGame.tag = "runtime";
                 Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 objetoGame.transform.position = mousePos;
@@ -46,7 +46,7 @@ public class container : MonoBehaviour
             {
                 objetoGame = (UnityEngine.GameObject)Resources.Load("gameobjects/objetoreciclagem");
                 objetoGame = Instantiate(objetoGame, new Vector3(-7.43f, -5.53f), Quaternion.identity);
-                objetoGame.GetComponent<SpriteRenderer>().sprite = sprites[4];
+                objetoGame.GetComponent<SpriteRenderer>().sprite = sprites[2];
                 objetoGame.tag = "runtime";
                 Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 objetoGame.transform.position = mousePos;
@@ -59,7 +59,7 @@ public class container : MonoBehaviour
             {
                 objetoGame = (UnityEngine.GameObject)Resources.Load("gameobjects/objetoreciclagem");
                 objetoGame = Instantiate(objetoGame, new Vector3(-7.43f, -5.53f), Quaternion.identity);
-                objetoGame.GetComponent<SpriteRenderer>().sprite = sprites[7];
+                objetoGame.GetComponent<SpriteRenderer>().sprite = sprites[3];
                 objetoGame.tag = "runtime";
                 Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 objetoGame.transform.position = mousePos;
