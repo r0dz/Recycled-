@@ -5,8 +5,7 @@ public class ObjetoReciclagem : MonoBehaviour
     private Vector3 posicao;
     private Vector3 destino;
     private float velocidade = 8.0f;
-    private GameObject gameController;
-    private bool chegou = false;
+    private bool movimentar = true;
     private int cidade;
 
 
@@ -14,6 +13,11 @@ public class ObjetoReciclagem : MonoBehaviour
     void Start()
     {
         posicao = gameObject.transform.position;
+
+        if(gameObject.tag == "runtime")
+        {
+            movimentar = false;
+        }
 
         if(posicao.x < 0)
         {
@@ -30,20 +34,19 @@ public class ObjetoReciclagem : MonoBehaviour
     {
         float passo = velocidade * Time.deltaTime;
 
-        if( gameObject.transform.position.x == -7.43f && !chegou)
+        if(movimentar)
         {
             transform.position = Vector3.MoveTowards(transform.position, destino, passo);
-            Debug.Log("alterando");
-        }
-        if (gameObject.transform.position.x == 7.68f && !chegou)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, destino, passo);
-            Debug.Log("alterando");
         }
 
-        if(gameObject.transform.position.y == 0.87f || gameObject.transform.position.y == 1.06f)
-        {
-            chegou = true;
+        if(gameObject.transform.position.y == destino.y)
+        { 
+            movimentar = false;
+
+            if(gameObject.tag == "runtime")
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -101,7 +104,18 @@ public class ObjetoReciclagem : MonoBehaviour
         if(gameObject.tag == "runtime" && (other.tag == "cidadeesquerda" || other.tag == "cidadedireita")) 
         {
             GameObject.Find("GameController").GetComponent<GameController>().addDinheiro();
-            Destroy(gameObject);
+            movimentar = true;
+
+            if(other.tag == "cidadeesquerda")
+            {
+                transform.position = new Vector3(-5.704f, 0.98f); 
+                destino = new Vector3(-5.69f, -5.53f);
+            } else
+            {
+                transform.position = new Vector3(5.68f, 1.161f);
+                destino = new Vector3(5.7f, -5.53f);
+            }
+
         }
 
     }
