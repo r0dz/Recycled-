@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -11,12 +10,18 @@ public class GameController : MonoBehaviour
     private int containerVerde = 0;
     private int containerAzul = 0;
     private GameObject textLabel;
+    private GameObject mensagemLabel;
+    private GameObject mensagemLixo;
     private Text text;
+    private string dinheiroAlteradoText;
     private bool executando = true;
+    private int tempoTexto = 10;
 
     // Start is called before the first frame update
     void Start()
     {
+        mensagemLabel = GameObject.Find("dinheiro-alterado");
+        mensagemLixo = GameObject.Find("mensagens");
         atualizaLabels();
     }
 
@@ -61,6 +66,16 @@ public class GameController : MonoBehaviour
         textLabel = GameObject.Find("azul-text");
         text = textLabel.GetComponent<Text>();
         text.text = containerAzul.ToString();
+
+        text = mensagemLabel.GetComponent<Text>();
+        text.text = dinheiroAlteradoText;
+
+        tempoTexto++;
+        if (tempoTexto > 100)
+        {
+            mensagemLabel.GetComponent<Text>().enabled = false;
+            mensagemLixo.GetComponent<Text>().enabled = false;
+        }
     }
 
     public void addAmarelo()
@@ -127,11 +142,25 @@ public class GameController : MonoBehaviour
     public void addDinheiro()
     {
         dinheiro += 4;
+        dinheiroAlteradoText = "+4";
+        mensagemLabel.GetComponent<Text>().color = Color.blue;
+        mensagemLabel.GetComponent<Text>().enabled = true;
+        tempoTexto = 0;
     }
 
     public void remDinheiro()
     {
         dinheiro -= 1;
+        dinheiroAlteradoText = "-1";
+        mensagemLabel.GetComponent<Text>().color = Color.red;
+        mensagemLabel.GetComponent<Text>().enabled = true;
+        tempoTexto = 0;
+    }
+
+    public void mostrarLixoDiferente()
+    {
+        mensagemLixo.GetComponent<Text>().enabled = true;
+        tempoTexto = 0;
     }
 
     public bool getExecutando()

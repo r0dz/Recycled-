@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class ObjetoReciclagem : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class ObjetoReciclagem : MonoBehaviour
     private Vector3 destino;
     private float velocidade = 8.0f;
     private bool movimentar = true;
+    private bool colidiu = false;
     private int cidade;
 
 
@@ -14,7 +16,8 @@ public class ObjetoReciclagem : MonoBehaviour
     {
         posicao = gameObject.transform.position;
 
-        if(gameObject.tag == "runtime")
+
+        if (gameObject.tag == "runtime")
         {
             movimentar = false;
         }
@@ -63,71 +66,77 @@ public class ObjetoReciclagem : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (gameObject.tag != "runtime" && other.tag != "runtime" && other.tag != "cidadeesquerda" && other.tag != "cidadedireita" && other.tag != "incineradora")
+        if (!colidiu)
         {
-            if (other.tag == "verde" && (GetComponent<SpriteRenderer>().sprite.name == "vidro" || GetComponent<SpriteRenderer>().sprite.name == "vidro2"))
+            if (gameObject.tag != "runtime" && other.tag != "runtime" && other.tag != "cidadeesquerda" && other.tag != "cidadedireita" && other.tag != "incineradora")
             {
-                GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
-                GameObject.Find("GameController").GetComponent<GameController>().addVerde();
-            }
-            else if (other.tag == "amarelo" && (GetComponent<SpriteRenderer>().sprite.name == "metal" || GetComponent<SpriteRenderer>().sprite.name == "metal2"))
-            {
-                GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
-                GameObject.Find("GameController").GetComponent<GameController>().addAmarelo();
-            }
-            else if (other.tag == "azul" && (GetComponent<SpriteRenderer>().sprite.name == "papel" || GetComponent<SpriteRenderer>().sprite.name == "papel2"))
-            {
-                GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
-                GameObject.Find("GameController").GetComponent<GameController>().addAzul();
-            }
-            else if (other.tag == "vermelho" && (GetComponent<SpriteRenderer>().sprite.name == "plastico" || GetComponent<SpriteRenderer>().sprite.name == "plastico2"))
-            {
-                GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
-                GameObject.Find("GameController").GetComponent<GameController>().addVermelho();
-            }
-            else
-            {
-                GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
+                if (other.tag == "verde" && (GetComponent<SpriteRenderer>().sprite.name == "vidro" || GetComponent<SpriteRenderer>().sprite.name == "vidro2"))
+                {
+                    GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
+                    GameObject.Find("GameController").GetComponent<GameController>().addVerde();
+                }
+                else if (other.tag == "amarelo" && (GetComponent<SpriteRenderer>().sprite.name == "metal" || GetComponent<SpriteRenderer>().sprite.name == "metal2"))
+                {
+                    GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
+                    GameObject.Find("GameController").GetComponent<GameController>().addAmarelo();
+                }
+                else if (other.tag == "azul" && (GetComponent<SpriteRenderer>().sprite.name == "papel" || GetComponent<SpriteRenderer>().sprite.name == "papel2"))
+                {
+                    GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
+                    GameObject.Find("GameController").GetComponent<GameController>().addAzul();
+                }
+                else if (other.tag == "vermelho" && (GetComponent<SpriteRenderer>().sprite.name == "plastico" || GetComponent<SpriteRenderer>().sprite.name == "plastico2"))
+                {
+                    GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
+                    GameObject.Find("GameController").GetComponent<GameController>().addVermelho();
+                }
+                else
+                {
+                    GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
+                    GameObject.Find("GameController").GetComponent<GameController>().mostrarLixoDiferente();
+                }
+
+                if (gameObject.tag == "esquerda")
+                {
+                    cidade = 0;
+                    Debug.Log("esquerda");
+                }
+                else
+                {
+                    cidade = 1;
+                    Debug.Log("direita");
+                }
+
+                GameObject.Find("ObjectsManager").GetComponent<ObjectsManager>().deletaObjeto(cidade);
+
+                Destroy(gameObject);
             }
 
-            if (gameObject.tag == "esquerda")
+            if (gameObject.tag == "runtime" && (other.tag == "cidadeesquerda" || other.tag == "cidadedireita"))
             {
-                cidade = 0;
-                Debug.Log("esquerda");
-            }
-            else
-            {
-                cidade = 1;
-                Debug.Log("direita");
-            }
+                GameObject.Find("GameController").GetComponent<GameController>().addDinheiro();
+                movimentar = true;
 
-            GameObject.Find("ObjectsManager").GetComponent<ObjectsManager>().deletaObjeto(cidade);
+                if (other.tag == "cidadeesquerda")
+                {
+                    transform.position = new Vector3(-5.704f, 0.98f);
+                    destino = new Vector3(-5.69f, -5.53f);
+                }
+                else
+                {
+                    transform.position = new Vector3(5.68f, 1.161f);
+                    destino = new Vector3(5.7f, -5.53f);
+                }
 
-            Destroy(gameObject);
-        }
-
-        if(gameObject.tag == "runtime" && (other.tag == "cidadeesquerda" || other.tag == "cidadedireita")) 
-        {
-            GameObject.Find("GameController").GetComponent<GameController>().addDinheiro();
-            movimentar = true;
-
-            if(other.tag == "cidadeesquerda")
-            {
-                transform.position = new Vector3(-5.704f, 0.98f); 
-                destino = new Vector3(-5.69f, -5.53f);
-            } else
-            {
-                transform.position = new Vector3(5.68f, 1.161f);
-                destino = new Vector3(5.7f, -5.53f);
+                colidiu = true;
             }
 
-        }
-
-        if((GetComponent<SpriteRenderer>().sprite.name == "vidroquebrado" || GetComponent<SpriteRenderer>().sprite.name == "vidroquebrado2") 
-            && other.tag == "incineradora")
-        {
-            GameObject.Find("ObjectsManager").GetComponent<ObjectsManager>().deletaObjeto(cidade);
-            Destroy(gameObject);
+            if ((GetComponent<SpriteRenderer>().sprite.name == "vidroquebrado" || GetComponent<SpriteRenderer>().sprite.name == "vidroquebrado2")
+                && other.tag == "incineradora")
+            {
+                GameObject.Find("ObjectsManager").GetComponent<ObjectsManager>().deletaObjeto(cidade);
+                Destroy(gameObject);
+            }
         }
 
     }
