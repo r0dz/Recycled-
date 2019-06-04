@@ -15,7 +15,7 @@ public class GameController : MonoBehaviour
     private Text text;
     private string dinheiroAlteradoText;
     private bool executando = true;
-    private int tempoTexto = 10;
+    private int tempoTexto = 200;
 
     // Start is called before the first frame update
     void Start()

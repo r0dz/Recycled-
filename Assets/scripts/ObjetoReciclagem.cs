@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class ObjetoReciclagem : MonoBehaviour
 {
@@ -8,19 +7,27 @@ public class ObjetoReciclagem : MonoBehaviour
     private float velocidade = 8.0f;
     private bool movimentar = true;
     private bool colidiu = false;
+    private bool deletar = false;
+    private int tempoExecucao = 100;
     private int cidade;
+    private ParticleSystem ps;
+    private SpriteRenderer sprite;
+    private Material[] material;
 
 
     //// Start is called before the first frame update
     void Start()
     {
+        material = Resources.LoadAll<Material>("materials");
         posicao = gameObject.transform.position;
-
+        sprite = GetComponent<SpriteRenderer>();
+        ps = GetComponent<ParticleSystem>();
+        ps.Stop();
 
         if (gameObject.tag == "runtime")
         {
             movimentar = false;
-        }
+        } 
 
         if(posicao.x < 0)
         {
@@ -35,11 +42,19 @@ public class ObjetoReciclagem : MonoBehaviour
     ////// Update is called once per frame
     void Update()
     {
+
+        tempoExecucao++;
+
         float passo = velocidade * Time.deltaTime;
 
-        if(movimentar)
+        if(movimentar && !deletar)
         {
             transform.position = Vector3.MoveTowards(transform.position, destino, passo);
+        }
+
+        if(deletar == true && tempoExecucao > 50)
+        {
+            Destroy(gameObject);
         }
 
         if(gameObject.transform.position.y == destino.y)
@@ -61,7 +76,10 @@ public class ObjetoReciclagem : MonoBehaviour
 
     void OnMouseUp()
     {
-        movimentar = true;
+        if (colidiu)
+        {
+            movimentar = true;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -109,7 +127,11 @@ public class ObjetoReciclagem : MonoBehaviour
 
                 GameObject.Find("ObjectsManager").GetComponent<ObjectsManager>().deletaObjeto(cidade);
 
-                Destroy(gameObject);
+                gameObject.GetComponent<ParticleSystemRenderer>().material = material[1];
+                ps.Play();
+                sprite.enabled = false;
+                deletar = true;
+                tempoExecucao = 0;
             }
 
             if (gameObject.tag == "runtime" && (other.tag == "cidadeesquerda" || other.tag == "cidadedireita"))
@@ -135,7 +157,10 @@ public class ObjetoReciclagem : MonoBehaviour
                 && other.tag == "incineradora")
             {
                 GameObject.Find("ObjectsManager").GetComponent<ObjectsManager>().deletaObjeto(cidade);
-                Destroy(gameObject);
+                ps.Play();
+                sprite.enabled = false;
+                deletar = true;
+                tempoExecucao = 0;
             }
         }
 
