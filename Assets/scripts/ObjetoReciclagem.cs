@@ -88,7 +88,7 @@ public class ObjetoReciclagem : MonoBehaviour
         {
             if (gameObject.tag != "runtime" && other.tag != "runtime" && other.tag != "cidadeesquerda" && other.tag != "cidadedireita" && other.tag != "incineradora")
             {
-                if (other.tag == "verde" && (GetComponent<SpriteRenderer>().sprite.name == "vidro" || GetComponent<SpriteRenderer>().sprite.name == "vidro2"))
+                if (other.tag == "verde" && (GetComponent<SpriteRenderer>().sprite.name == "vidro_verde" || GetComponent<SpriteRenderer>().sprite.name == "vidro2_verde"))
                 {
                     GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
                     GameObject.Find("GameController").GetComponent<GameController>().addVerde();
@@ -98,7 +98,7 @@ public class ObjetoReciclagem : MonoBehaviour
                     GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
                     GameObject.Find("GameController").GetComponent<GameController>().addAmarelo();
                 }
-                else if (other.tag == "azul" && (GetComponent<SpriteRenderer>().sprite.name == "papel" || GetComponent<SpriteRenderer>().sprite.name == "papel2"))
+                else if (other.tag == "azul" && (GetComponent<SpriteRenderer>().sprite.name == "paper" || GetComponent<SpriteRenderer>().sprite.name == "paper"))
                 {
                     GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
                     GameObject.Find("GameController").GetComponent<GameController>().addAzul();
@@ -153,7 +153,13 @@ public class ObjetoReciclagem : MonoBehaviour
                 colidiu = true;
             }
 
-            if ((GetComponent<SpriteRenderer>().sprite.name == "vidroquebrado" || GetComponent<SpriteRenderer>().sprite.name == "vidroquebrado2")
+            if ((GetComponent<SpriteRenderer>().sprite.name == "vidroquebrado_incine" || GetComponent<SpriteRenderer>().sprite.name == "vidroquebrado2_incine"
+                        || GetComponent<SpriteRenderer>().sprite.name == "cascaBanana_org"
+                            || GetComponent<SpriteRenderer>().sprite.name == "restoGeral_org"
+                                || GetComponent<SpriteRenderer>().sprite.name == "cenoura_org"
+                                    || GetComponent<SpriteRenderer>().sprite.name == "maca_org"
+                                         || GetComponent<SpriteRenderer>().sprite.name == "queijo_org"
+                                            || GetComponent<SpriteRenderer>().sprite.name == "osso_org")
                 && other.tag == "incineradora")
             {
                 GameObject.Find("ObjectsManager").GetComponent<ObjectsManager>().deletaObjeto(cidade);
