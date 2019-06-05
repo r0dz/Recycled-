@@ -155,11 +155,8 @@ public class ObjetoReciclagem : MonoBehaviour
 
             if ((GetComponent<SpriteRenderer>().sprite.name == "vidroquebrado_incine" || GetComponent<SpriteRenderer>().sprite.name == "vidroquebrado2_incine"
                         || GetComponent<SpriteRenderer>().sprite.name == "cascaBanana_org"
-                            || GetComponent<SpriteRenderer>().sprite.name == "restoGeral_org"
                                 || GetComponent<SpriteRenderer>().sprite.name == "cenoura_org"
-                                    || GetComponent<SpriteRenderer>().sprite.name == "maca_org"
-                                         || GetComponent<SpriteRenderer>().sprite.name == "queijo_org"
-                                            || GetComponent<SpriteRenderer>().sprite.name == "osso_org")
+                                    || GetComponent<SpriteRenderer>().sprite.name == "maca_org")
                 && other.tag == "incineradora")
             {
                 GameObject.Find("ObjectsManager").GetComponent<ObjectsManager>().deletaObjeto(cidade);

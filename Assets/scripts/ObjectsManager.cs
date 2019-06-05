@@ -22,7 +22,7 @@ public class ObjectsManager : MonoBehaviour
 
     GameObject objetoGame;
     List<Objeto> objetos = new List<Objeto>();
-    string[] tipos = { "vidroquebrado_incine", "vidroquebrado2_incine", "vidro_verde", "vidro2_verde", "plastico", "plastico2", "metal", "metal2", "paper", "paper2", "cascaBanana_org", "restoGeral_org", "cenoura_org", "maca_org", "queijo_org", "osso_org"};
+    string[] tipos = { "vidroquebrado_incine", "vidroquebrado2_incine", "vidro_verde", "vidro2_verde", "plastico", "plastico2", "metal", "metal2", "paper", "paper2", "cascaBanana_org", "cenoura_org", "maca_org"};
     Sprite[] sprites;
     Random random = new Random();
 
