@@ -4,12 +4,13 @@ public class ObjetoReciclagem : MonoBehaviour
 {
     private Vector3 posicao;
     private Vector3 destino;
+    private float posicaoEsteira;
     private float velocidade = 8.0f;
-    private bool movimentar = true;
+    private bool movimentavel = false;
+    private bool movimentar = false;
     private bool colidiu = false;
     private bool deletar = false;
     private int tempoExecucao = 100;
-    private int cidade;
     private ParticleSystem ps;
     private SpriteRenderer sprite;
     private Material[] material;
@@ -19,7 +20,6 @@ public class ObjetoReciclagem : MonoBehaviour
     void Start()
     {
         material = Resources.LoadAll<Material>("materials");
-        posicao = gameObject.transform.position;
         sprite = GetComponent<SpriteRenderer>();
         ps = GetComponent<ParticleSystem>();
         ps.Stop();
@@ -27,22 +27,13 @@ public class ObjetoReciclagem : MonoBehaviour
         if (gameObject.tag == "runtime")
         {
             movimentar = false;
+            movimentavel = true;
         } 
-
-        if(posicao.x < 0)
-        {
-            destino = new Vector3(-7.43f, 0.87f);
-        }
-        else
-        {
-            destino = new Vector3(7.68f, 1.06f);
-        }
     }
 
     ////// Update is called once per frame
     void Update()
     {
-
         tempoExecucao++;
 
         float passo = velocidade * Time.deltaTime;
@@ -66,17 +57,25 @@ public class ObjetoReciclagem : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+
+        if(gameObject.transform.position.y == -1.07f)
+        {
+            movimentavel = true;
+        }
     }
 
     void OnMouseDrag()
     {
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = mousePos;
+        if (movimentavel)
+        {
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            transform.position = mousePos;
+        }
     }
 
     void OnMouseUp()
     {
-        if (colidiu)
+        if (!colidiu && gameObject.tag != "runtime")
         {
             movimentar = true;
         }
@@ -84,7 +83,7 @@ public class ObjetoReciclagem : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (!colidiu)
+        if (!colidiu && other.tag != "esquerda" && other.tag != "direita")
         {
             if (gameObject.tag != "runtime" && other.tag != "runtime" && other.tag != "cidadeesquerda" && other.tag != "cidadedireita" && other.tag != "incineradora")
             {
@@ -98,7 +97,7 @@ public class ObjetoReciclagem : MonoBehaviour
                     GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
                     GameObject.Find("GameController").GetComponent<GameController>().addAmarelo();
                 }
-                else if (other.tag == "azul" && (GetComponent<SpriteRenderer>().sprite.name == "paper" || GetComponent<SpriteRenderer>().sprite.name == "paper"))
+                else if (other.tag == "azul" && (GetComponent<SpriteRenderer>().sprite.name == "paper" || GetComponent<SpriteRenderer>().sprite.name == "paper2"))
                 {
                     GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
                     GameObject.Find("GameController").GetComponent<GameController>().addAzul();
@@ -114,18 +113,7 @@ public class ObjetoReciclagem : MonoBehaviour
                     GameObject.Find("GameController").GetComponent<GameController>().mostrarLixoDiferente();
                 }
 
-                if (gameObject.tag == "esquerda")
-                {
-                    cidade = 0;
-                    Debug.Log("esquerda");
-                }
-                else
-                {
-                    cidade = 1;
-                    Debug.Log("direita");
-                }
-
-                GameObject.Find("ObjectsManager").GetComponent<ObjectsManager>().deletaObjeto(cidade);
+                GameObject.Find("ObjectsManager").GetComponent<ObjectsManager>().deletaObjeto(posicaoEsteira, gameObject.tag);
 
                 gameObject.GetComponent<ParticleSystemRenderer>().material = material[1];
                 ps.Play();
@@ -159,7 +147,7 @@ public class ObjetoReciclagem : MonoBehaviour
                                     || GetComponent<SpriteRenderer>().sprite.name == "maca_org")
                 && other.tag == "incineradora")
             {
-                GameObject.Find("ObjectsManager").GetComponent<ObjectsManager>().deletaObjeto(cidade);
+                GameObject.Find("ObjectsManager").GetComponent<ObjectsManager>().deletaObjeto(posicaoEsteira, gameObject.tag);
                 ps.Play();
                 sprite.enabled = false;
                 deletar = true;
@@ -167,6 +155,26 @@ public class ObjetoReciclagem : MonoBehaviour
             }
         }
 
+    }
+
+    public void setDestino(float destinoNovo)
+    {
+        posicao = gameObject.transform.position;
+        posicaoEsteira = destinoNovo;
+        Debug.Log("destino novo");
+
+        if (posicao.x < 0)
+        {
+            destino = new Vector3(-7.43f, destinoNovo);
+            Debug.Log(destino.x);
+        }
+        else
+        {
+            destino = new Vector3(7.68f, destinoNovo);
+            Debug.Log(destino.x);
+        }
+
+        movimentar = true;
     }
 
 }
