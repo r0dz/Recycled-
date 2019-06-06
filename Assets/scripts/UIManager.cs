@@ -7,4 +7,10 @@ public class UIManager : MonoBehaviour
     {
         SceneManager.LoadScene("jogo");
     }
+
+    public void RetornarJogo()
+    {
+        SceneManager.LoadScene("jogo");
+    }
+
 }
