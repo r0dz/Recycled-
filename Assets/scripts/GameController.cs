@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -14,6 +15,7 @@ public class GameController : MonoBehaviour
     private GameObject mensagemLixo;
     private Text text;
     private string dinheiroAlteradoText;
+    private string nomeCena = "Fim";
     private bool executando = true;
     private int tempoTexto = 200;
 
@@ -33,6 +35,7 @@ public class GameController : MonoBehaviour
         if(tempo <= 0)
         {
             executando = false;
+            SceneManager.LoadScene(nomeCena);
         }
 
         if(executando)

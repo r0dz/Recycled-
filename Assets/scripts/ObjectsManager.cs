@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Random = System.Random;
 
@@ -22,9 +21,22 @@ public class ObjectsManager : MonoBehaviour
 
     GameObject objetoGame;
     List<Objeto> objetos = new List<Objeto>();
+    Dictionary<float, GameObject> esteiraEsquerda = new Dictionary<float, GameObject>()
+    {
+        {-1.07f, null},
+        {-2.8f, null},
+        {-4.30f, null}
+    };
+    Dictionary<float, GameObject> esteiraDireita = new Dictionary<float, GameObject>()
+    {
+        {-1.07f, null},
+        {-2.8f, null},
+        {-4.30f, null}
+    };
     string[] tipos = { "vidroquebrado_incine", "vidroquebrado2_incine", "vidro_verde", "vidro2_verde", "plastico", "plastico2", "metal", "metal2", "paper", "paper2", "cascaBanana_org", "cenoura_org", "maca_org"};
     Sprite[] sprites;
     Random random = new Random();
+    int time = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -35,64 +47,98 @@ public class ObjectsManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        instanciaObjetos();
+        time++;
+
+        if (time > 30)
+        {
+            instanciaObjetos();
+            time = 0;
+        }
     }
 
     private void instanciaObjetos()
     {
-        if(objetos.Count < 2 && GameObject.Find("GameController").GetComponent<GameController>().getExecutando())
+        if(GameObject.Find("GameController").GetComponent<GameController>().getExecutando())
         {
-            Objeto objeto = criaObjetoAleatorio();
-            objetos.Add(objeto);
+            List<float> posicoesVaziasEsquerda = verificaEsteira(esteiraEsquerda);
+            List<float> posicoesVaziasDireita = verificaEsteira(esteiraDireita);
+
             objetoGame = (UnityEngine.GameObject)Resources.Load("gameobjects/objetoreciclagem");
 
             if (objetoGame != null)
-            {
-                if (objeto.cidade == 0)
-                {
-                    objetoGame = Instantiate(objetoGame, new Vector3(-7.43f, -5.53f), Quaternion.identity);
-                    objetoGame.tag = "esquerda";
-                }
-                else
-                {
-                    objetoGame = Instantiate(objetoGame, new Vector3(7.68f, -5.57f), Quaternion.identity);
-                    objetoGame.tag = "direita";
-                }
-                Debug.Log("objeto criado");
+            { 
 
-                objetoGame.GetComponent<SpriteRenderer>().sprite = sprites[random.Next(10)];
+                if(posicoesVaziasEsquerda.Count != 0)
+                { 
+                    foreach (float posicao in posicoesVaziasEsquerda)
+                    {
+                        objetoGame = Instantiate(objetoGame, new Vector3(-7.43f, -5.53f), Quaternion.identity);
+                        objetoGame.tag = "esquerda";
+
+                        esteiraEsquerda[posicao] = objetoGame;
+                        esteiraEsquerda[posicao].GetComponent<SpriteRenderer>().sprite = sprites[random.Next(13)];
+                        esteiraEsquerda[posicao].GetComponent<ObjetoReciclagem>().setDestino(posicao);
+
+                        break;
+                    }                     
+                }
+                if(posicoesVaziasDireita.Count != 0)
+                {
+                    foreach (float posicao in posicoesVaziasDireita)
+                    {
+                        objetoGame = Instantiate(objetoGame, new Vector3(7.68f, -5.57f), Quaternion.identity);
+                        objetoGame.tag = "direita";
+
+                        esteiraDireita[posicao] = objetoGame;
+                        esteiraDireita[posicao].GetComponent<SpriteRenderer>().sprite = sprites[random.Next(13)];
+                        esteiraDireita[posicao].GetComponent<ObjetoReciclagem>().setDestino(posicao);
+             
+                        break;
+                    }
+                }
+                //Debug.Log("objeto criado");
             }
         }
     }
 
-    private Objeto criaObjetoAleatorio()
+    private List<float> verificaEsteira(Dictionary<float, GameObject> esteira)
     {
-        int cidade;
-        string tipo = tipos[random.Next(4)];
+        List<float> posicoesVazias = new List<float>();
 
-        if(objetos.Count == 0)
+        foreach (KeyValuePair<float, GameObject> objeto in esteira)
         {
-            cidade = random.Next(2);
-        } 
-        else
-        {
-            if (objetos.Any((obj) => obj.cidade == 0))
+            if(objeto.Value == null)
             {
-                cidade = 1;
-            }
-            else
-            {
-                cidade = 0;
+                posicoesVazias.Add(objeto.Key);
             }
         }
-        Debug.Log(cidade.ToString());
 
-        return new Objeto(cidade, tipo);
+        return posicoesVazias;
     }
 
-    public void deletaObjeto(int cidade)
+    private void reordenaEsteira(Dictionary<float, GameObject> esteira)
     {
-        objetos.Remove(objetos.Find((obj) => obj.cidade == cidade));
+        esteira[-2.8f].GetComponent<ObjetoReciclagem>().setDestino(-1.07f);
+        esteira[-1.07f] = esteira[-2.8f];
+
+        esteira[-4.30f].GetComponent<ObjetoReciclagem>().setDestino(-2.8f);
+        esteira[-2.8f] = esteira[-4.30f];
+
+        esteira[-4.30f] = null;
+    }
+
+    public void deletaObjeto(float posicaoEsteira, string cidade)
+    {
+        if(cidade == "esquerda")
+        {
+            esteiraEsquerda[posicaoEsteira] = null;
+            reordenaEsteira(esteiraEsquerda);
+        } else
+        {
+            esteiraDireita[posicaoEsteira] = null;
+            reordenaEsteira(esteiraDireita);
+        }
+
         Debug.Log("removido");
         Debug.Log(objetos.Count.ToString());
     }
