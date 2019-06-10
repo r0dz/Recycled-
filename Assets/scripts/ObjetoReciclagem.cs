@@ -58,9 +58,10 @@ public class ObjetoReciclagem : MonoBehaviour
             }
         }
 
-        if(gameObject.transform.position.y == -1.07f)
+        if(gameObject.transform.position.y == 0.13f)
         {
             movimentavel = true;
+            velocidade = 8.0f;
         }
     }
 
@@ -153,6 +154,16 @@ public class ObjetoReciclagem : MonoBehaviour
                 deletar = true;
                 tempoExecucao = 0;
             }
+        } else if(!colidiu && gameObject.tag != "runtime" && (other.tag == "esquerda" || other.tag == "direita"))
+        {
+            GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
+            GameObject.Find("ObjectsManager").GetComponent<ObjectsManager>().deletaObjeto(posicaoEsteira, gameObject.tag);
+
+            gameObject.GetComponent<ParticleSystemRenderer>().material = material[1];
+            ps.Play();
+            sprite.enabled = false;
+            deletar = true;
+            tempoExecucao = 0;
         }
 
     }
@@ -174,6 +185,12 @@ public class ObjetoReciclagem : MonoBehaviour
             Debug.Log(destino.x);
         }
 
+        movimentar = true;
+    }
+
+    public void setVelocidade(float velocidade)
+    {
+        this.velocidade = velocidade;
         movimentar = true;
     }
 

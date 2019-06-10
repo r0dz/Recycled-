@@ -13,6 +13,10 @@ public class GameController : MonoBehaviour
     private GameObject textLabel;
     private GameObject mensagemLabel;
     private GameObject mensagemLixo;
+    private GameObject cheioAmarelo;
+    private GameObject cheioVerde;
+    private GameObject cheioAzul;
+    private GameObject cheioVermelho;
     private Text text;
     private string dinheiroAlteradoText;
     private string nomeCena = "Fim";
@@ -24,6 +28,10 @@ public class GameController : MonoBehaviour
     {
         mensagemLabel = GameObject.Find("dinheiro-alterado");
         mensagemLixo = GameObject.Find("mensagens");
+        cheioAmarelo = GameObject.Find("cheio-amarelo");
+        cheioVerde = GameObject.Find("cheio-verde");
+        cheioVermelho = GameObject.Find("cheio-vermelho");
+        cheioAzul = GameObject.Find("cheio-azul");
         atualizaLabels();
     }
 
@@ -83,13 +91,21 @@ public class GameController : MonoBehaviour
 
     public void addAmarelo()
     {
-        containerAmarelo++;
+        if (containerAmarelo == 10)
+        {
+            cheioAmarelo.GetComponent<Text>().enabled = true;
+        }
+        else
+        {
+            containerAmarelo++;
+        }
     }
 
     public bool remAmarelo()
     {
         if (containerAmarelo > 0)
         {
+            cheioAmarelo.GetComponent<Text>().enabled = false;
             containerAmarelo--;
             return true;
         }
@@ -99,13 +115,21 @@ public class GameController : MonoBehaviour
 
     public void addVerde()
     {
-        containerVerde++;
+        if (containerVerde == 10)
+        {
+            cheioVerde.GetComponent<Text>().enabled = true;
+        }
+        else
+        {
+            containerVerde++;
+        }
     }
 
     public bool remVerde()
     {
         if (containerVerde > 0)
         {
+            cheioVerde.GetComponent<Text>().enabled = false;
             containerVerde--;
             return true;
         }
@@ -114,13 +138,21 @@ public class GameController : MonoBehaviour
 
     public void addAzul()
     {
-        containerAzul++;
+        if (containerAzul == 10)
+        {
+            cheioAzul.GetComponent<Text>().enabled = true;
+        }
+        else
+        {
+            containerAzul++;
+        }
     }
 
     public bool remAzul()
     {
         if (containerAzul > 0)
         {
+            cheioAzul.GetComponent<Text>().enabled = false;
             containerAzul--;
             return true;
         }
@@ -129,13 +161,21 @@ public class GameController : MonoBehaviour
 
     public void addVermelho()
     {
-        containerVermelho++;
+        if (containerVermelho == 10)
+        {
+            cheioVermelho.GetComponent<Text>().enabled = true;
+        }
+        else
+        {
+            containerVermelho++;
+        }
     }
 
     public bool remVermelho()
     {
         if (containerVermelho > 0)
         {
+            cheioVermelho.GetComponent<Text>().enabled = false;
             containerVermelho--;
             return true;
         }

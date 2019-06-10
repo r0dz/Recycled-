@@ -23,13 +23,13 @@ public class ObjectsManager : MonoBehaviour
     List<Objeto> objetos = new List<Objeto>();
     Dictionary<float, GameObject> esteiraEsquerda = new Dictionary<float, GameObject>()
     {
-        {-1.07f, null},
+        {0.13f, null},
         {-2.8f, null},
         {-4.30f, null}
     };
     Dictionary<float, GameObject> esteiraDireita = new Dictionary<float, GameObject>()
     {
-        {-1.07f, null},
+        {0.13f, null},
         {-2.8f, null},
         {-4.30f, null}
     };
@@ -49,7 +49,7 @@ public class ObjectsManager : MonoBehaviour
     {
         time++;
 
-        if (time > 30)
+        if (time > 200)
         {
             instanciaObjetos();
             time = 0;
@@ -77,7 +77,9 @@ public class ObjectsManager : MonoBehaviour
 
                         esteiraEsquerda[posicao] = objetoGame;
                         esteiraEsquerda[posicao].GetComponent<SpriteRenderer>().sprite = sprites[random.Next(13)];
-                        esteiraEsquerda[posicao].GetComponent<ObjetoReciclagem>().setDestino(posicao);
+                        esteiraEsquerda[posicao].GetComponent<ObjetoReciclagem>().setDestino(0.13f);
+
+                        esteiraEsquerda[posicao].GetComponent<ObjetoReciclagem>().setVelocidade(1.0f);
 
                         break;
                     }                     
@@ -91,8 +93,10 @@ public class ObjectsManager : MonoBehaviour
 
                         esteiraDireita[posicao] = objetoGame;
                         esteiraDireita[posicao].GetComponent<SpriteRenderer>().sprite = sprites[random.Next(13)];
-                        esteiraDireita[posicao].GetComponent<ObjetoReciclagem>().setDestino(posicao);
-             
+                        esteiraDireita[posicao].GetComponent<ObjetoReciclagem>().setDestino(0.13f);
+
+                        esteiraDireita[posicao].GetComponent<ObjetoReciclagem>().setVelocidade(1.0f);
+
                         break;
                     }
                 }
@@ -116,27 +120,29 @@ public class ObjectsManager : MonoBehaviour
         return posicoesVazias;
     }
 
-    private void reordenaEsteira(Dictionary<float, GameObject> esteira)
-    {
-        esteira[-2.8f].GetComponent<ObjetoReciclagem>().setDestino(-1.07f);
-        esteira[-1.07f] = esteira[-2.8f];
+    //private void reordenaEsteira(Dictionary<float, GameObject> esteira)
+    //{
+    //    esteira[-2.8f].GetComponent<ObjetoReciclagem>().setDestino(0.13f);
+    //    esteira[0.13f] = esteira[-2.8f];
+    //    esteira[0.13f].GetComponent<ObjetoReciclagem>().setVelocidade(1.0f);
 
-        esteira[-4.30f].GetComponent<ObjetoReciclagem>().setDestino(-2.8f);
-        esteira[-2.8f] = esteira[-4.30f];
+    //    esteira[-4.30f].GetComponent<ObjetoReciclagem>().setDestino(0.13f);
+    //    esteira[-2.8f] = esteira[-4.30f];
+    //    esteira[-2.8f].GetComponent<ObjetoReciclagem>().setVelocidade(1.0f);
 
-        esteira[-4.30f] = null;
-    }
+    //    esteira[-4.30f] = null;
+    //}
 
     public void deletaObjeto(float posicaoEsteira, string cidade)
     {
         if(cidade == "esquerda")
         {
             esteiraEsquerda[posicaoEsteira] = null;
-            reordenaEsteira(esteiraEsquerda);
+            //reordenaEsteira(esteiraEsquerda);
         } else
         {
             esteiraDireita[posicaoEsteira] = null;
-            reordenaEsteira(esteiraDireita);
+            //reordenaEsteira(esteiraDireita);
         }
 
         Debug.Log("removido");
