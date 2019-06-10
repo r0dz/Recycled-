@@ -36,12 +36,16 @@ public class ObjectsManager : MonoBehaviour
     string[] tipos = { "vidroquebrado_incine", "vidroquebrado2_incine", "vidro_verde", "vidro2_verde", "plastico", "plastico2", "metal", "metal2", "paper", "paper2", "cascaBanana_org", "cenoura_org", "maca_org"};
     Sprite[] sprites;
     Random random = new Random();
+    private float velocidade;
+    private int tempoIntervalo;
     int time = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         sprites = Resources.LoadAll<Sprite>("icons");
+        velocidade = PlayerPrefs.GetFloat("velocidade");
+        tempoIntervalo = PlayerPrefs.GetInt("tempointervalo");
     }
 
     // Update is called once per frame
@@ -49,7 +53,7 @@ public class ObjectsManager : MonoBehaviour
     {
         time++;
 
-        if (time > 200)
+        if (time > tempoIntervalo)
         {
             instanciaObjetos();
             time = 0;
@@ -79,7 +83,7 @@ public class ObjectsManager : MonoBehaviour
                         esteiraEsquerda[posicao].GetComponent<SpriteRenderer>().sprite = sprites[random.Next(13)];
                         esteiraEsquerda[posicao].GetComponent<ObjetoReciclagem>().setDestino(0.13f);
 
-                        esteiraEsquerda[posicao].GetComponent<ObjetoReciclagem>().setVelocidade(1.0f);
+                        esteiraEsquerda[posicao].GetComponent<ObjetoReciclagem>().setVelocidade(velocidade);
 
                         break;
                     }                     
@@ -95,7 +99,7 @@ public class ObjectsManager : MonoBehaviour
                         esteiraDireita[posicao].GetComponent<SpriteRenderer>().sprite = sprites[random.Next(13)];
                         esteiraDireita[posicao].GetComponent<ObjetoReciclagem>().setDestino(0.13f);
 
-                        esteiraDireita[posicao].GetComponent<ObjetoReciclagem>().setVelocidade(1.0f);
+                        esteiraDireita[posicao].GetComponent<ObjetoReciclagem>().setVelocidade(velocidade);
 
                         break;
                     }

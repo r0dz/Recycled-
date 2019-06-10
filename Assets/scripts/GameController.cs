@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     private GameObject cheioAzul;
     private GameObject cheioVermelho;
     private Text text;
+    private int limiteConteiner;
     private string dinheiroAlteradoText;
     private string nomeCena = "Fim";
     private bool executando = true;
@@ -32,6 +33,7 @@ public class GameController : MonoBehaviour
         cheioVerde = GameObject.Find("cheio-verde");
         cheioVermelho = GameObject.Find("cheio-vermelho");
         cheioAzul = GameObject.Find("cheio-azul");
+        limiteConteiner = PlayerPrefs.GetInt("limiteconteiner");
         atualizaLabels();
     }
 
@@ -91,7 +93,7 @@ public class GameController : MonoBehaviour
 
     public void addAmarelo()
     {
-        if (containerAmarelo == 10)
+        if (containerAmarelo == limiteConteiner)
         {
             cheioAmarelo.GetComponent<Text>().enabled = true;
         }
@@ -115,7 +117,7 @@ public class GameController : MonoBehaviour
 
     public void addVerde()
     {
-        if (containerVerde == 10)
+        if (containerVerde == limiteConteiner)
         {
             cheioVerde.GetComponent<Text>().enabled = true;
         }
@@ -138,7 +140,7 @@ public class GameController : MonoBehaviour
 
     public void addAzul()
     {
-        if (containerAzul == 10)
+        if (containerAzul == limiteConteiner)
         {
             cheioAzul.GetComponent<Text>().enabled = true;
         }
@@ -161,7 +163,7 @@ public class GameController : MonoBehaviour
 
     public void addVermelho()
     {
-        if (containerVermelho == 10)
+        if (containerVermelho == limiteConteiner)
         {
             cheioVermelho.GetComponent<Text>().enabled = true;
         }
