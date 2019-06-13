@@ -131,7 +131,8 @@ public class ObjetoReciclagem : MonoBehaviour
                 tempoExecucao = 0;
             }
 
-            if (gameObject.tag == "runtime" && (other.tag == "cidadeesquerda" || other.tag == "cidadedireita"))
+            if (gameObject.tag == "runtime" && ((other.tag == "cidadeesquerda" && !GameObject.Find("GameController").GetComponent<GameController>().getSaidaEsquerda()) ||
+                (other.tag == "cidadedireita" && !GameObject.Find("GameController").GetComponent<GameController>().getSaidaDireita())))
             {
                 GameObject.Find("GameController").GetComponent<GameController>().addDinheiro();
                 movimentar = true;

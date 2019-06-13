@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = System.Random;
 
 public class GameController : MonoBehaviour
 {
@@ -27,10 +28,16 @@ public class GameController : MonoBehaviour
     private int lixoVermelho = 0;
     private int lixoVerde = 0;
     private int lixoAzul = 0;
+    private int contagem = 0;
+    private bool saidaEsquerda = false;
+    private bool saidaDireita = false;
+    private int aleatorio;
+    Random random;
 
     // Start is called before the first frame update
     void Start()
     {
+        random = new Random();
         mensagemLabel = GameObject.Find("dinheiro-alterado");
         mensagemLixo = GameObject.Find("mensagens");
         cheioAmarelo = GameObject.Find("cheio-amarelo");
@@ -45,6 +52,7 @@ public class GameController : MonoBehaviour
     void Update()
     {
         tempo -= Time.deltaTime;
+        contagem++;
 
         if(tempo <= 0)
         {
@@ -58,8 +66,37 @@ public class GameController : MonoBehaviour
 
         if(executando)
         {
+            atualizaFechamento();
             atualizaLabels();
         }
+    }
+
+    private void atualizaFechamento()
+    {
+        if(contagem > 300)
+        {
+            GameObject.Find("cidadeesquerda").GetComponent<SpriteRenderer>().enabled = false;
+            GameObject.Find("cidadedireita").GetComponent<SpriteRenderer>().enabled = false;
+            saidaEsquerda = false;
+            saidaDireita = false;
+        }
+
+        if(random.Next(100) == 4 && !saidaDireita && !saidaEsquerda)
+        {
+            aleatorio = random.Next(3);
+            contagem = 0;
+
+            if(aleatorio == 1)
+            {
+                GameObject.Find("cidadeesquerda").GetComponent<SpriteRenderer>().enabled = true;
+                saidaEsquerda = true;
+            } else
+            {
+                GameObject.Find("cidadedireita").GetComponent<SpriteRenderer>().enabled = true;
+                saidaDireita = true;
+            }
+        }
+        
     }
 
     private void atualizaLabels()
@@ -223,5 +260,15 @@ public class GameController : MonoBehaviour
     public bool getExecutando()
     {
         return executando;
+    }
+
+    public bool getSaidaEsquerda()
+    {
+        return saidaEsquerda;
+    }
+
+    public bool getSaidaDireita()
+    {
+        return saidaDireita;
     }
 }
