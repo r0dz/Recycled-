@@ -14,7 +14,8 @@ public class ObjetoReciclagem : MonoBehaviour
     private ParticleSystem ps;
     private SpriteRenderer sprite;
     private Material[] material;
-
+    private AudioClip fogo;
+    private AudioClip objetoNolixo;
 
     //// Start is called before the first frame update
     void Start()
@@ -23,6 +24,9 @@ public class ObjetoReciclagem : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         ps = GetComponent<ParticleSystem>();
         ps.Stop();
+
+        fogo = Resources.Load<AudioClip>("sons/fogo");
+        objetoNolixo = Resources.Load<AudioClip>("sons/objetonolixo");
 
         if (gameObject.tag == "runtime")
         {
@@ -88,6 +92,10 @@ public class ObjetoReciclagem : MonoBehaviour
         {
             if (gameObject.tag != "runtime" && other.tag != "runtime" && other.tag != "cidadeesquerda" && other.tag != "cidadedireita" && other.tag != "incineradora")
             {
+
+                GetComponent<AudioSource>().clip = objetoNolixo;
+                GetComponent<AudioSource>().Play();
+
                 if (other.tag == "verde" && (GetComponent<SpriteRenderer>().sprite.name == "vidro_verde" || GetComponent<SpriteRenderer>().sprite.name == "vidro2_verde"))
                 {
                     GameObject.Find("GameController").GetComponent<GameController>().remDinheiro();
@@ -148,6 +156,10 @@ public class ObjetoReciclagem : MonoBehaviour
                                     || GetComponent<SpriteRenderer>().sprite.name == "maca_org")
                 && other.tag == "incineradora")
             {
+                GetComponent<AudioSource>().clip = fogo;
+                GetComponent<AudioSource>().volume = 1.0f;
+                GetComponent<AudioSource>().Play();
+
                 GameObject.Find("ObjectsManager").GetComponent<ObjectsManager>().deletaObjeto(posicaoEsteira, gameObject.tag);
                 ps.Play();
                 sprite.enabled = false;
