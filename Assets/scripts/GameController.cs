@@ -23,6 +23,10 @@ public class GameController : MonoBehaviour
     private string nomeCena = "Fim";
     private bool executando = true;
     private int tempoTexto = 200;
+    private int lixoAmarelo = 0;
+    private int lixoVermelho = 0;
+    private int lixoVerde = 0;
+    private int lixoAzul = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +49,10 @@ public class GameController : MonoBehaviour
         if(tempo <= 0)
         {
             executando = false;
+            PlayerPrefs.SetInt("lixoamarelo", lixoAmarelo);
+            PlayerPrefs.SetInt("lixovermelho", lixoVermelho);
+            PlayerPrefs.SetInt("lixoverde", lixoVerde);
+            PlayerPrefs.SetInt("lixoazul", lixoAzul);
             SceneManager.LoadScene(nomeCena);
         }
 
@@ -99,6 +107,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
+            lixoAmarelo++;
             containerAmarelo++;
         }
     }
@@ -123,6 +132,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
+            lixoVerde++;
             containerVerde++;
         }
     }
@@ -146,6 +156,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
+            lixoAzul++;
             containerAzul++;
         }
     }
@@ -169,6 +180,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
+            lixoVermelho++;
             containerVermelho++;
         }
     }
