@@ -29,7 +29,6 @@ public class GameController : MonoBehaviour
     private int lixoVerde = 0;
     private int lixoAzul = 0;
     private int contagem = 0;
-    private int tempoInstrucoes = 0;
     private bool saidaEsquerda = false;
     private bool saidaDireita = false;
     private int aleatorio;
@@ -46,15 +45,6 @@ public class GameController : MonoBehaviour
         cheioVermelho = GameObject.Find("cheio-vermelho");
         cheioAzul = GameObject.Find("cheio-azul");
         limiteConteiner = PlayerPrefs.GetInt("limiteconteiner");
-
-        if(PlayerPrefs.GetInt("facil") == 0)
-        {
-            GameObject.Find("metal").GetComponent<Text>().enabled = false;
-            GameObject.Find("papel").GetComponent<Text>().enabled = false;
-            GameObject.Find("plastico").GetComponent<Text>().enabled = false;
-            GameObject.Find("vidro").GetComponent<Text>().enabled = false;
-        }
-
         atualizaLabels();
     }
 
@@ -63,7 +53,6 @@ public class GameController : MonoBehaviour
     {
         tempo -= Time.deltaTime;
         contagem++;
-        tempoInstrucoes++;
 
         if(tempo <= 0)
         {
@@ -144,12 +133,6 @@ public class GameController : MonoBehaviour
         {
             mensagemLabel.GetComponent<Text>().enabled = false;
             mensagemLixo.GetComponent<Text>().enabled = false;
-        }
-
-        if(tempoInstrucoes > 200)
-        {
-            GameObject.Find("instrucoes").GetComponent<Image>().enabled = false;
-            GameObject.Find("UIManager").GetComponent<UIManager>().setFalseBool();
         }
     }
 
@@ -287,10 +270,5 @@ public class GameController : MonoBehaviour
     public bool getSaidaDireita()
     {
         return saidaDireita;
-    }
-
-    public void setZeroTempoIntrucoes()
-    {
-        tempoInstrucoes = 0;
     }
 }
